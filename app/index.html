@@ -5,55 +5,70 @@
     <title>FullCalendar with Vue.js</title>
     <link rel="stylesheet" href="http://fullcalendar.io/js/fullcalendar-2.6.0/fullcalendar.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js" charset="utf-8"></script>
+    <script src="https://code.jquery.com/jquery-2.2.0.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.js" charset="utf-8"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.16/vue.js" charset="utf-8"></script>
     <script>
 
     	$(document).ready(function() {
+        
+        var CuHeaderComponent = Vue.extend({
+          template: '<h1>Hello, Calendar!!</h1>'
+        });
 
+        Vue.component('cu-header', CuHeaderComponent);
 
-    		/* initialize the external events
-    		-----------------------------------------------------------------*/
+        var appVM = new Vue({
+          el: '#app'
+        });
 
-    		$('#external-events .fc-event').each(function() {
+        var externalEventsVM = new Vue({
+          el: '#external-events',
+          data: {
+            items: 6
+          },
+          ready: function() {
+            $('#external-events .fc-event').each(function() {
+        			$(this).data('event', {
+        				title: $.trim($(this).text()),
+        				stick: true
+        			});
 
-    			// store data so the calendar knows to render an event upon drop
-    			$(this).data('event', {
-    				title: $.trim($(this).text()), // use the element's text as the event title
-    				stick: true // maintain when user navigates (see docs on the renderEvent method)
-    			});
+        			$(this).draggable({
+        				zIndex: 999,
+        				revert: true,
+        				revertDuration: 0
+        			});
+        		});
+          }
+        });
 
-    			// make the event draggable using jQuery UI
-    			$(this).draggable({
-    				zIndex: 999,
-    				revert: true,      // will cause the event to go back to its
-    				revertDuration: 0  //  original position after the drag
-    			});
+        var calendarVM = new Vue({
+          el: '#calendar',
+          methods: {
+            initCalendar: function() {
 
-    		});
-
-
-    		/* initialize the calendar
-    		-----------------------------------------------------------------*/
-
-    		$('#calendar').fullCalendar({
-    			header: {
-    				left: 'prev,next today',
-    				center: 'title',
-    				right: 'month,agendaWeek,agendaDay'
-    			},
-    			editable: true,
-    			droppable: true, // this allows things to be dropped onto the calendar
-    			drop: function() {
-    				// is the "remove after drop" checkbox checked?
-    				if ($('#drop-remove').is(':checked')) {
-    					// if so, remove the element from the "Draggable Events" list
-    					$(this).remove();
-    				}
-    			}
-    		});
-
+              $(this.$el).fullCalendar({
+          			header: {
+          				left: 'prev,next today',
+          				center: 'title',
+          				right: 'month,agendaWeek,agendaDay'
+          			},
+          			editable: true,
+          			droppable: true,
+          			drop: function() {
+          				if ($('#drop-remove').is(':checked')) {
+          					$(this).remove();
+          				}
+          			}
+          		});
+            }
+          },
+          ready: function() {
+            this.initCalendar()
+          }
+        });
 
     	});
 
@@ -115,15 +130,15 @@
     </style>
   </head>
   <body>
+
+    <div id="app">
+      <cu-header></cu-header>
+    </div>
     <div id='wrap'>
 
   		<div id='external-events'>
   			<h4>Draggable Events</h4>
-  			<div class='fc-event'>My Event 1</div>
-  			<div class='fc-event'>My Event 2</div>
-  			<div class='fc-event'>My Event 3</div>
-  			<div class='fc-event'>My Event 4</div>
-  			<div class='fc-event'>My Event 5</div>
+  			<div v-for="item in items" class='fc-event'>My Event {{ $index }}</div>
   			<p>
   				<input type='checkbox' id='drop-remove' />
   				<label for='drop-remove'>remove after drop</label>
@@ -131,11 +146,6 @@
   		</div>
 
   		<div id='calendar'></div>
-
-  		<div style='clear:both'></div>
-
   	</div>
-
-
   </body>
 </html>
