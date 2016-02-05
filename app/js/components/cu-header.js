@@ -5,7 +5,7 @@ var Vue = require('vue');
 var API = require('./../utils/api.js');
 
 module.exports = Vue.extend({
-  template: '<h1 v-on:click="reverseMessage">Hello, Calendar!!<br>{{message}}</h1>',
+  template: '<h1 v-on:click="reverseMessage">Hello, Calendar!!<br>{{message | uppercase}}</h1>',
   data: {
     message: ''
   },

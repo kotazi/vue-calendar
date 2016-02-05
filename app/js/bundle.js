@@ -53,15 +53,18 @@
 
 	$(document).ready(function() {
 
+	  // フィルタを読み込む
+	  __webpack_require__(7);
+
 	  // コンポーネントを登録する
-	  var CuHeaderComponent = __webpack_require__(7)
+	  var CuHeaderComponent = __webpack_require__(8);
 	  Vue.component('cu-header', CuHeaderComponent);
 
 	  // 各種VMを読み込む
-	  __webpack_require__(33);
 	  __webpack_require__(34);
-	  __webpack_require__(36);
+	  __webpack_require__(35);
 	  __webpack_require__(37);
+	  __webpack_require__(38);
 	});
 
 
@@ -10114,14 +10117,33 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// Vuewを読み込む
+	var Vue = __webpack_require__(1);
+
+	Vue.filter('reverse', function (value) {
+	  return value.split('').reverse().join('')
+	});
+
+	Vue.filter('uppercase', function (value) {
+	  if (!value) {
+	    return '';
+	  }
+	  return value.toUpperCase();
+	});
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
 	
 	// Vuewを読み込む
 	var Vue = __webpack_require__(1);
 
-	var API = __webpack_require__(8);
+	var API = __webpack_require__(9);
 
 	module.exports = Vue.extend({
-	  template: '<h1 v-on:click="reverseMessage">Hello, Calendar!!<br>{{message}}</h1>',
+	  template: '<h1 v-on:click="reverseMessage">Hello, Calendar!!<br>{{message | uppercase}}</h1>',
 	  data: {
 	    message: ''
 	  },
@@ -10140,7 +10162,7 @@
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -10148,7 +10170,7 @@
 	var Vue = __webpack_require__(1);
 
 	// vue-resourceを読み込む
-	Vue.use(__webpack_require__(9));
+	Vue.use(__webpack_require__(10));
 
 	module.exports = new Vue({
 	  methods: {
@@ -10167,7 +10189,7 @@
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10176,16 +10198,16 @@
 
 	function install(Vue) {
 
-	    var _ = __webpack_require__(10);
+	    var _ = __webpack_require__(11);
 
 	    _.config = Vue.config;
 	    _.warning = Vue.util.warn;
 	    _.nextTick = Vue.util.nextTick;
 
-	    Vue.url = __webpack_require__(11);
-	    Vue.http = __webpack_require__(17);
-	    Vue.resource = __webpack_require__(32);
-	    Vue.Promise = __webpack_require__(19);
+	    Vue.url = __webpack_require__(12);
+	    Vue.http = __webpack_require__(18);
+	    Vue.resource = __webpack_require__(33);
+	    Vue.Promise = __webpack_require__(20);
 
 	    Object.defineProperties(Vue.prototype, {
 
@@ -10226,7 +10248,7 @@
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports) {
 
 	/**
@@ -10354,14 +10376,14 @@
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Service for URL templating.
 	 */
 
-	var _ = __webpack_require__(10);
+	var _ = __webpack_require__(11);
 	var ie = document.documentMode;
 	var el = document.createElement('a');
 
@@ -10397,10 +10419,10 @@
 	 */
 
 	Url.transforms = [
-	    __webpack_require__(12),
-	    __webpack_require__(14),
+	    __webpack_require__(13),
 	    __webpack_require__(15),
-	    __webpack_require__(16)
+	    __webpack_require__(16),
+	    __webpack_require__(17)
 	];
 
 	/**
@@ -10490,14 +10512,14 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * URL Template (RFC 6570) Transform.
 	 */
 
-	var UrlTemplate = __webpack_require__(13);
+	var UrlTemplate = __webpack_require__(14);
 
 	module.exports = function (options) {
 
@@ -10512,7 +10534,7 @@
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports) {
 
 	/**
@@ -10668,14 +10690,14 @@
 
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Legacy Transform.
 	 */
 
-	var _ = __webpack_require__(10);
+	var _ = __webpack_require__(11);
 
 	module.exports = function (options, next) {
 
@@ -10720,14 +10742,14 @@
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Query Parameter Transform.
 	 */
 
-	var _ = __webpack_require__(10);
+	var _ = __webpack_require__(11);
 
 	module.exports = function (options, next) {
 
@@ -10750,14 +10772,14 @@
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Root Prefix Transform.
 	 */
 
-	var _ = __webpack_require__(10);
+	var _ = __webpack_require__(11);
 
 	module.exports = function (options, next) {
 
@@ -10772,17 +10794,17 @@
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Service for sending network requests.
 	 */
 
-	var _ = __webpack_require__(10);
-	var Client = __webpack_require__(18);
-	var Promise = __webpack_require__(19);
-	var interceptor = __webpack_require__(22);
+	var _ = __webpack_require__(11);
+	var Client = __webpack_require__(19);
+	var Promise = __webpack_require__(20);
+	var interceptor = __webpack_require__(23);
 	var jsonType = {'Content-Type': 'application/json'};
 
 	function Http(url, options) {
@@ -10835,13 +10857,13 @@
 	};
 
 	Http.interceptors = [
-	    __webpack_require__(23),
 	    __webpack_require__(24),
 	    __webpack_require__(25),
-	    __webpack_require__(27),
+	    __webpack_require__(26),
 	    __webpack_require__(28),
 	    __webpack_require__(29),
-	    __webpack_require__(30)
+	    __webpack_require__(30),
+	    __webpack_require__(31)
 	];
 
 	Http.headers = {
@@ -10876,16 +10898,16 @@
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Base client.
 	 */
 
-	var _ = __webpack_require__(10);
-	var Promise = __webpack_require__(19);
-	var xhrClient = __webpack_require__(21);
+	var _ = __webpack_require__(11);
+	var Promise = __webpack_require__(20);
+	var xhrClient = __webpack_require__(22);
 
 	module.exports = function (request) {
 
@@ -10947,15 +10969,15 @@
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Promise adapter.
 	 */
 
-	var _ = __webpack_require__(10);
-	var PromiseObj = window.Promise || __webpack_require__(20);
+	var _ = __webpack_require__(11);
+	var PromiseObj = window.Promise || __webpack_require__(21);
 
 	function Promise(executor, context) {
 
@@ -11062,14 +11084,14 @@
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Promises/A+ polyfill v1.1.4 (https://github.com/bramstein/promis)
 	 */
 
-	var _ = __webpack_require__(10);
+	var _ = __webpack_require__(11);
 
 	var RESOLVED = 0;
 	var REJECTED = 1;
@@ -11247,15 +11269,15 @@
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * XMLHttp client.
 	 */
 
-	var _ = __webpack_require__(10);
-	var Promise = __webpack_require__(19);
+	var _ = __webpack_require__(11);
+	var Promise = __webpack_require__(20);
 
 	module.exports = function (request) {
 	    return new Promise(function (resolve) {
@@ -11303,15 +11325,15 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Interceptor factory.
 	 */
 
-	var _ = __webpack_require__(10);
-	var Promise = __webpack_require__(19);
+	var _ = __webpack_require__(11);
+	var Promise = __webpack_require__(20);
 
 	module.exports = function (handler, vm) {
 
@@ -11354,14 +11376,14 @@
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Before Interceptor.
 	 */
 
-	var _ = __webpack_require__(10);
+	var _ = __webpack_require__(11);
 
 	module.exports = {
 
@@ -11378,7 +11400,7 @@
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
 	/**
@@ -11414,14 +11436,14 @@
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * JSONP Interceptor.
 	 */
 
-	var jsonpClient = __webpack_require__(26);
+	var jsonpClient = __webpack_require__(27);
 
 	module.exports = {
 
@@ -11438,15 +11460,15 @@
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * JSONP client.
 	 */
 
-	var _ = __webpack_require__(10);
-	var Promise = __webpack_require__(19);
+	var _ = __webpack_require__(11);
+	var Promise = __webpack_require__(20);
 
 	module.exports = function (request) {
 	    return new Promise(function (resolve) {
@@ -11492,7 +11514,7 @@
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports) {
 
 	/**
@@ -11515,14 +11537,14 @@
 
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Mime Interceptor.
 	 */
 
-	var _ = __webpack_require__(10);
+	var _ = __webpack_require__(11);
 
 	module.exports = {
 
@@ -11557,14 +11579,14 @@
 
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Header Interceptor.
 	 */
 
-	var _ = __webpack_require__(10);
+	var _ = __webpack_require__(11);
 
 	module.exports = {
 
@@ -11589,15 +11611,15 @@
 
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * CORS Interceptor.
 	 */
 
-	var _ = __webpack_require__(10);
-	var xdrClient = __webpack_require__(31);
+	var _ = __webpack_require__(11);
+	var xdrClient = __webpack_require__(32);
 	var xhrCors = 'withCredentials' in new XMLHttpRequest();
 	var originUrl = _.url.parse(location.href);
 
@@ -11632,15 +11654,15 @@
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * XDomain client (Internet Explorer).
 	 */
 
-	var _ = __webpack_require__(10);
-	var Promise = __webpack_require__(19);
+	var _ = __webpack_require__(11);
+	var Promise = __webpack_require__(20);
 
 	module.exports = function (request) {
 	    return new Promise(function (resolve) {
@@ -11675,14 +11697,14 @@
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Service for interacting with RESTful services.
 	 */
 
-	var _ = __webpack_require__(10);
+	var _ = __webpack_require__(11);
 
 	function Resource(url, params, actions, options) {
 
@@ -11791,7 +11813,7 @@
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -11804,7 +11826,7 @@
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -11812,7 +11834,7 @@
 	var Vue = __webpack_require__(1);
 
 	// モデルを読み込む
-	var data = __webpack_require__(35);
+	var data = __webpack_require__(36);
 
 	new Vue({
 	  el: '#external-events',
@@ -11835,7 +11857,7 @@
 
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports) {
 
 	
@@ -11845,7 +11867,7 @@
 
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -11879,7 +11901,7 @@
 
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -11888,7 +11910,7 @@
 
 	var vm = new Vue({
 	  el: '#life-cycle',
-	  template: '<h3>life-cycle</3><button v-on:click="destroy">destroy</button><button v-on:click="detached">detached</detached>',
+	  template: '<h3>life-cycle</3><button @click="destroy">destroy</button><button @:click="detached">detached</detached>',
 	  init: function () {
 	    // データの監視とイベント/ウォッチャのセットアップより前の、インスタンスが初期化されるときに同期的に呼ばれます。
 	    console.log('#life-cycle: init');
@@ -11941,6 +11963,7 @@
 	  },
 	  methods: {
 	    detached: function() {
+	      // Vue インスタンスの DOM 要素またはフラグメントを DOM から削除します。
 	      vm.$remove();
 	    },
 	    destroy: function () {
