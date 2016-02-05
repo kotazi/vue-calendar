@@ -15,4 +15,5 @@ $(document).ready(function() {
   require('./viewmodels/app.js');
   require('./viewmodels/external-events.js');
   require('./viewmodels/calendar.js');
+  require('./viewmodels/life-cycle.js');
 });
